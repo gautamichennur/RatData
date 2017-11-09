@@ -66,7 +66,7 @@ def sms_reply():
         counter = 0
         currCase = 0
 
-    if (currCase == 1 and counter == 2):
+    if (currCase == 1 and counter == 2 and (userInput == "1" or userInput == "2")):
         message.body("Was the rat dead or alive? \n 1. Dead \n 2. Alive \n Type '1' or '2'")
         counter = counter + 1
         print (dict_location[userInput])
