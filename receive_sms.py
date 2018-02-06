@@ -75,9 +75,9 @@ def sms_reply():
         message.body("Was the rat dead or alive? \n 1. Dead \n 2. Alive \n Type '1' or '2'")
         counter = counter + 1
         print (dict_location[userInput])
-        print "nancy check userInput: ", userInput
-        worksheet.write(row_counter, 2, userInput)
-        workbook.close()
+        #print "nancy check userInput: ", userInput
+        #worksheet.write(row_counter, 2, userInput)
+        #workbook.close()
         #print (userInput)
         #print (counter)
         #print (currCase)
