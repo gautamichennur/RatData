@@ -40,12 +40,10 @@ def sms_reply():
         + "\n 3. I want to prevent rats \n Type '1' or '2' or '3'")
         counter = counter + 1
         response.append(message)
-        print "nancy check userInput: ", userInput
-        worksheet.write(row_counter, 1, userInput)
+        #print "nancy check userInput: ", userInput
+        #worksheet.write(row_counter, 1, userInput)
         return str(response)
-        #print (counter)
-        #print (userInput)
-        #print (currCase)
+
 
     if (currCase == 1 and counter == 4):
         message.body("Thank you for your response!")
@@ -60,16 +58,18 @@ def sms_reply():
         #print (userInput)
         #print (currCase)
         #print (counter)
+
     elif (currCase == 2 and counter == 3):
         message.body("Thank you for your response!")
         currCase = 0
         counter = 0
         userInput = 0
     elif (counter == 3):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
-        userInput = 0
-        counter = 0
-        currCase = 0
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
+        #"\n Type 'RAT' to return to the main menu!")
+        #userInput = 0
+        counter = counter - 1
+        #currCase = 0
 
     if (currCase == 1 and counter == 2 and (userInput == "1" or userInput == "2")):
         message.body("Was the rat dead or alive? \n 1. Dead \n 2. Alive \n Type '1' or '2'")
@@ -81,17 +81,20 @@ def sms_reply():
         #print (userInput)
         #print (counter)
         #print (currCase)
+
     elif (currCase == 2 and (userInput == "1" or userInput == "2") and counter == 2):
         message.body("Please give us a location. Type the Street Name. For example 'Main Street'")
         counter = counter + 1
         print (dict_evidence[userInput])
         #print (counter)
         #print (currCase)
+
     elif (counter == 2):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
-        userInput = 0
-        counter = 0
-        currCase = 0
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
+        #"\n Type 'RAT' to return to the main menu!")
+        #userInput = 0
+        counter = counter - 1
+        #currCase = 0
 
 
     if (userInput == "1" and counter == 1):
@@ -118,10 +121,11 @@ def sms_reply():
         #print (counter)
         #print (currCase)
     elif(counter == 1):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
-        userInput = 0
-        counter = 0
-        currCase = 0
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
+        #"\n Type 'RAT' to return to the main menu!")
+        #userInput = 0
+        counter = counter - 1
+        #currCase = 0
 
 
 
