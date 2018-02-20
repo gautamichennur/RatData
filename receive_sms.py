@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect
 import os
-from twilio.twiml.messaging_response import Body, Media, Message, MessagingResponse
 import xlsxwriter
+from twilio.twiml.messaging_response import Body, Media, Message, MessagingResponse
 
 # open a terminal window
 # cd to ratchat directory
@@ -11,16 +11,15 @@ import xlsxwriter
 # cd to ratchat directory
 # python receive_sms.py
 
-workbook = xlsxwriter.Workbook('hello.xlsx')
-worksheet = workbook.add_worksheet()
-row_counter = 1
-
 app = Flask(__name__)
 counter = 0
 currCase = 0
 dict_alive = {"1": "Dead", "2": "Alive"}
 dict_location = {"1": "Inside", "2": "Outside"}
 dict_evidence = {"1": "Rat Droppings", "2":"Chewed boxes or food"}
+# workbook = xlsxwriter.Workbook('test_data.xlsx')
+# worksheet = workbook.add_worksheet()
+# row_counter = 1
 
 @app.route("/", methods=['GET', 'POST'])
 def sms_reply():
@@ -31,72 +30,105 @@ def sms_reply():
     global dict_location
 
 
+
     response = MessagingResponse()
     message = Message()
     userInput = request.values.get("Body", None)
 
+    #prints what Twilio user texts the bot. Runs each time the user texts.
+    print(userInput)
+
+    # ---------- CASE 0: BASE CASE ---------------------------
+    # ---------- counter: 0 ---------------
+    # ---------- currCase: 0 -----------------
     if (counter == 0):
-        message.body("Hello! Please reply with one of the following numbers: \n 1. I saw a rat \n 2. I saw evidence of a rat"
+        message.body("Hello! Please reply with one of the following numbers:"
+        + "\n 1. I saw a rat \n 2. I saw evidence of a rat"
         + "\n 3. I want to prevent rats \n Type '1' or '2' or '3'")
         counter = counter + 1
         response.append(message)
-        #print "nancy check userInput: ", userInput
-        #worksheet.write(row_counter, 1, userInput)
         return str(response)
 
+        #print (counter)
+        #print (userInput)
+        #print (currCase)
 
+    # ------------ CASE 1, Thank you response --------------------------
     if (currCase == 1 and counter == 4):
         message.body("Thank you for your response!")
-        print(dict_alive[userInput])
+
+        #resetting the counters, back to case 0
         currCase = 0
         counter = 0
         userInput = 0
 
+
+    # ----------- CASE 1, rat sighting: Location/Address ---------------------
     if (currCase == 1 and (userInput == "1" or userInput == "2") and counter == 3):
         message.body("Please give us a location. Type the Street Name. For example 'Main Street'")
         counter = counter + 1
+
+        #resonse for rat sighting: "was the rat inside or outside?"
+        print (dict_alive[userInput])
+
+
         #print (userInput)
         #print (currCase)
         #print (counter)
 
+    # ---------- CASE 2, Thank you response --------------------------------
     elif (currCase == 2 and counter == 3):
         message.body("Thank you for your response!")
+
+        #resetting counters, back to case 0
         currCase = 0
         counter = 0
         userInput = 0
-    elif (counter == 3):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
-        #"\n Type 'RAT' to return to the main menu!")
-        #userInput = 0
-        counter = counter - 1
-        #currCase = 0
 
+    # ------------ CASE 3, ERROR --------------------------------------------
+    elif (counter == 3):
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
+
+        #TODO change error type to go back one step not back to beginning
+        #resets counters to case 0
+        userInput = 0
+        counter = 0
+        currCase = 0
+
+    # ------------- CASE 1, rat sighting: dead/alive ----------------------
     if (currCase == 1 and counter == 2 and (userInput == "1" or userInput == "2")):
         message.body("Was the rat dead or alive? \n 1. Dead \n 2. Alive \n Type '1' or '2'")
         counter = counter + 1
+
+        #response for rat sighting: "was the rat inside or outside?"
         print (dict_location[userInput])
-        #print "nancy check userInput: ", userInput
-        #worksheet.write(row_counter, 2, userInput)
-        #workbook.close()
+
         #print (userInput)
         #print (counter)
         #print (currCase)
 
+    # ------------ CASE 2, rat evidence: location/address ----------------------
     elif (currCase == 2 and (userInput == "1" or userInput == "2") and counter == 2):
         message.body("Please give us a location. Type the Street Name. For example 'Main Street'")
         counter = counter + 1
+
+        #response for rat evidence: "what type of evidence?"
         print (dict_evidence[userInput])
+
         #print (counter)
         #print (currCase)
 
+    # ------------ CASE 2, ERROR ----------------------------------------------
     elif (counter == 2):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
-        #"\n Type 'RAT' to return to the main menu!")
-        #userInput = 0
-        counter = counter - 1
-        #currCase = 0
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
+
+        #reset counters to case 0
+        userInput = 0
+        counter = 0
+        currCase = 0
 
 
+    # ----------------- CASE 1, rat sighting: location -------------------
     if (userInput == "1" and counter == 1):
         message.body("Where did you see the rat? \n 1. Inside \n 2.Outside \n Type '1' or '2'")
         counter = counter + 1
@@ -105,6 +137,9 @@ def sms_reply():
         #print (userInput)
         #print (counter)
         #print (currCase)
+
+
+    # ---------------- CASE 2, rat evidence: type of evidence -------------
     elif (userInput == "2" and counter == 1):
         message.body("Please categorize your evidence:\n 1.Rat Droppings\n 2.Chewed boxes or food \n Type '1' or '2'")
         counter = counter + 1
@@ -113,19 +148,28 @@ def sms_reply():
         #print (userInput)
         #print (counter)
         #print (currCase)
+
+
+    # -------------- CASE 3, rat prevention ------------------------------
     elif (userInput == "3" and counter == 1):
         message.body("Thank you for your interest in rat prevention. Please follow this link for more info: linkhere")
         counter = 0
         currCase = 0
+
         #print (userInput)
         #print (counter)
         #print (currCase)
+
+
+    # ---------- ERROR ---------------------------
     elif(counter == 1):
-        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.")
-        #"\n Type 'RAT' to return to the main menu!")
-        #userInput = 0
-        counter = counter - 1
-        #currCase = 0
+        message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
+
+        #reset to case 0
+        userInput = 0
+        counter = 0
+        currCase = 0
+
 
 
 
