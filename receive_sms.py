@@ -59,7 +59,7 @@ def sms_reply():
         case = 2
     elif (userInput == "3" and counter == 1):
         case = 3
-    else:
+    elif (counter == 1):
         message.body("Sorry looks like there was an error."
         + " Please enter only the numbers provided as an option."
         + "\n Type 'RAT' to return to the main menu!")
