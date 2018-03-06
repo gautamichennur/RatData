@@ -62,10 +62,10 @@ def sms_reply():
     elif (counter == 1):
         message.body("Sorry looks like there was an error."
         + " Please enter only the numbers provided as an option."
-        + "\n Type 'RAT' to return to the main menu!")
+        + "\n Type '1', '2', or '3'")
         #reset counters, back to case 0
-        counter = 0
-        case = 0
+        # counter = 0
+        # case = 0
 
 
     #-------------------- CASE LOGIC -----------------------------
@@ -97,10 +97,10 @@ def sms_reply():
         else:
             #---------ERROR--------------
             message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option."
-            + "\n Type 'RAT' to return to the main menu!")
+            + "\n Type '1' or '2'")
             #reset counters, back to case 0
-            counter = 0
-            case = 0
+            # counter = 0
+            # case = 0
 
     elif (case == 2):
         if (counter == 1):
@@ -124,7 +124,7 @@ def sms_reply():
         else:
             #-----------ERROR------------
             message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option."
-            + "\n Type 'RAT' to return to the main menu!")
+            + "\n Type '1' or '2'")
             #reset counters, back to case 0
             counter = 0
             case = 0
@@ -173,7 +173,6 @@ def sms_reply():
     # elif (counter == 3):
     #     message.body("Sorry looks like there was an error. Please enter only the numbers provided as an option.\n Type 'RAT' to return to the main menu!")
     #
-    #     #TODO change error type to go back one step not back to beginning
     #     #resets counters to case 0
     #     userInput = 0
     #     counter = 0
